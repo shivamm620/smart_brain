@@ -25,7 +25,6 @@ const particlesOptions = {
     }
   }
 }
-
 class App extends Component {
   constructor(){
       super()
@@ -37,6 +36,11 @@ class App extends Component {
         isSingin:false
       }
   }
+ /*  componentDidMount(){
+    fetch('http://localhost:6000/')
+    .then(response=>response.json())
+    .then(console.log)
+  } */
   onInputChange =(event)=>{
     this.setState({input:event.target.value});
   }
