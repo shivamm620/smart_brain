@@ -15,15 +15,21 @@ class Singin extends Component{
     this.setState({singInPassword:event.target.value})
   }
   onSubmitSingIn = () =>{
-    fetch('http://localhost:6000/singin' , {
+    fetch('http://localhost:6000/singin', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        email : this.state.singInEmail,
+        gmail: this.state.singInEmail,
         password: this.state.singInPassword
       })
     })
-    this.props.onChangeRoute('home')
+    .then(response => response.json())
+    .then(data => {
+      if (data === "success"){
+        this.props.onChangeRoute('home');
+      }
+    })
+    
   }
   render(){
     const {onChangeRoute} = this.props;
@@ -31,7 +37,6 @@ class Singin extends Component{
       <div>
       <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
       <main className="pa4 black-80">         
-           <form className="measure">
              <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
                <legend className="f1 fw6 ph0 mh0">Sign In</legend>
                <div className="mt3">
@@ -55,13 +60,17 @@ class Singin extends Component{
 
              </fieldset>
              <div className="">
-               <input onClick={this.onSubmitSingIn} className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in"/>
+               <input onClick={this.onSubmitSingIn} 
+               className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
+                type="submit" 
+                value="Sign in"/>
              </div>
              <div className="lh-copy mt3">
-               <p  onClick={ ()=>onChangeRoute('register')} className="f6 link dim black db pointer">Register</p>
+               <p  
+               onClick={ ()=>onChangeRoute('register')}
+                className="f6 link dim black db pointer">Register</p>
              </div>
-           </form>
-          </main>
+             </main>
           </article>
 
       </div>

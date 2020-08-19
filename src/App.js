@@ -33,9 +33,28 @@ class App extends Component {
         imageUrl:'',
         box:{},
         route:'Singin',
-        isSingin:false
+        isSingin:false,
+        user:{
+          id:'',
+          name:'',
+          email:'',
+          password:'',
+          entries:0,
+          joined:'',
+        }
       }
   }
+
+  loadUser = (data) => {
+    this.setState({user: {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    }})
+  }
+
  /*  componentDidMount(){
     fetch('http://localhost:6000/')
     .then(response=>response.json())
@@ -94,7 +113,7 @@ class App extends Component {
           
           : ( this.state.route==='Singin'
           ? <Singin onChangeRoute={this.onChangeRoute}/>
-            :<Register onChangeRoute={this.onChangeRoute}/>
+            :<Register loadUser={this.loadUser} onChangeRoute={this.onChangeRoute}/>
           )
           }
           </div>
