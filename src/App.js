@@ -38,7 +38,6 @@ class App extends Component {
           id:'',
           name:'',
           email:'',
-          password:'',
           entries:0,
           joined:'',
         }
@@ -82,9 +81,25 @@ class App extends Component {
   onSubmit = () =>{ 
     this.setState({imageUrl:this.state.input})
     app.models.predict(Clarifai.FACE_DETECT_MODEL, 
-      this.state.input).then(response=> this.faceBox(this.FaceLocation(response))
+      this.state.input)
+      .then(response=>{
+        if(response){
+          fetch('http://localhost:6000/image' ,{
+            method: 'put',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+              id: this.state.user.id
+            })
+          })
+          .then(response => response.json())
+          .then(count =>{
+            this.setState(Object.assign(this.state.user,{entries:count}))
+          })
+        }
+        this.faceBox(this.FaceLocation(response)
+        )})
       .catch(err=>console.log(err))
-    )
+
   }
   onChangeRoute =(route) =>{
     if(route=== 'Singout'){
@@ -106,13 +121,13 @@ class App extends Component {
 
           ?<div>
                <Logo />
-               <Rank/>
+               <Rank name={this.state.user.name} entries={this.state.user.entries}/>
                <ImageLinkFrom onSubmit={this.onSubmit} onInputChange={this.onInputChange}/>
                <FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}/>
                </div>
           
           : ( this.state.route==='Singin'
-          ? <Singin onChangeRoute={this.onChangeRoute}/>
+          ? <Singin loadUser={this.loadUser} onChangeRoute={this.onChangeRoute}/>
             :<Register loadUser={this.loadUser} onChangeRoute={this.onChangeRoute}/>
           )
           }
