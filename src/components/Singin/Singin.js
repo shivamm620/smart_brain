@@ -19,7 +19,7 @@ class Singin extends Component{
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
-        gmail: this.state.singInEmail,
+        email: this.state.singInEmail,
         password: this.state.singInPassword
       })
     })
